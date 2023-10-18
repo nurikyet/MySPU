@@ -34,7 +34,7 @@ DEF_CMD(COS, 6, 0,
     ProcessorCos(spu);
     })
 
-DEF_CMD(IN, 7, 1,
+DEF_CMD(IN, 7, 0,
     {
     ProcessorIn(spu);
     })
@@ -44,7 +44,7 @@ DEF_CMD(SUB, 8, 0,
     ProcessorSub(spu);
     })
 
-DEF_CMD(OUT, 9, 1,
+DEF_CMD(OUT, 9, 0,
     {
     ProcessorOut(spu);
     })
