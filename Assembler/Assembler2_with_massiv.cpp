@@ -40,6 +40,9 @@
         }                                                               \
     else
 
+#define ABOBA printf("aboba - %d\n", __LINE__)
+
+void PrintEverything(int* codeArray, int position);
 //-----------------------------------------------------------------------------
 
 int Assembler(FILE* InputFile, FILE* OutputFile)
@@ -47,6 +50,8 @@ int Assembler(FILE* InputFile, FILE* OutputFile)
 
     assert(InputFile);
     assert(OutputFile);
+
+    ABOBA;
 
     int* codeArray = (int*)calloc(MAX_LEN_OF_ARRAY, sizeof(int));
     if (codeArray == nullptr)
@@ -57,6 +62,8 @@ int Assembler(FILE* InputFile, FILE* OutputFile)
 
     int version = 0;
     fscanf(InputFile, "%d", &version);
+
+    ABOBA;
 
     char signature[MAX_LEN_OF_LINE] = "";
     fscanf(InputFile, "%s", &signature);
@@ -82,9 +89,13 @@ int Assembler(FILE* InputFile, FILE* OutputFile)
         }
     #undef DEF_CMD
 
+    ABOBA;
+
     MassivOut(OutputFile, codeArray, position);
 
     BinaryRecord(codeArray, position);
+
+    PrintEverything(codeArray, position);
     return (int)ErrorsOfSPU::NO_ERROR;
     }
 
@@ -93,6 +104,8 @@ int Assembler(FILE* InputFile, FILE* OutputFile)
 void MassivOut(FILE* OutputFile, int* codeArray, int len)
     {
     assert(OutputFile);
+
+    ABOBA;
 
     for (int i = 0; i < len; i++)
         {
@@ -115,6 +128,8 @@ int BinaryRecord(int* codeArray, int position)
     fwrite(&position, sizeof(int), 1, file);
     size_t elements_written = fwrite(codeArray, sizeof(int), position, file);
 
+    ABOBA;
+
     if (elements_written != position)
         {
         printf("Error in recording\n");
@@ -124,19 +139,19 @@ int BinaryRecord(int* codeArray, int position)
 
     fclose(file);
 
-   // file = fopen("code.bin", "rb");
-
-    fprintf (stderr, "\n<<<From binary code>>>\n");
-    for (int i = 0; i < position; i++)
-        {
-        fprintf(stderr, "%d - %08X\n", i, codeArray[i]);
-        }
-
-   // fclose(file);
-
     return 0;
 }
 
 //-----------------------------------------------------------------------------
 
+void PrintEverything(int* codeArray, int position)
+    {
+    fprintf (stderr, "\n<<<From binary code>>>\n");
 
+    ABOBA;
+
+    for (int i = 0; i < position; i++)
+        {
+        fprintf(stderr, "%d - %08X\n", i, codeArray[i]);
+        }
+    }
