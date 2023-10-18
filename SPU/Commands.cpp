@@ -1,6 +1,9 @@
 #include <stdio.h>
+#include <math.h>
 
 #include "Commands.h"
+#include "SPU.h"
+#include "..\Types.h"
 #include "..\TotalFile.h"
 #include "..\Stack.h"
 
@@ -11,9 +14,9 @@ int ProcessorCos(struct Processor* spu)
     elem_t element  = POISON;
     StackPop(&(spu->stk), &element);
 
-    elem_t cos = COEFFICIENT * cos((double)element / COEFFICIENT);
+    elem_t result = COEFFICIENT * cos((double)element / COEFFICIENT);
 
-    StackPush(&(spu->stk), cos);
+    StackPush(&(spu->stk), result);
 
     PROCESSOR_VERIFY(spu);
     return (int)Error::NO_ERROR;
@@ -27,9 +30,9 @@ int ProcessorSin(struct Processor* spu)
 
     StackPop(&(spu->stk), &element);
 
-    elem_t sin = COEFFICIENT * sin((double)element / COEFFICIENT);
+    elem_t result = COEFFICIENT * sin((double)element / COEFFICIENT);
 
-    StackPush(&(spu->stk), sin);
+    StackPush(&(spu->stk), result);
 
     PROCESSOR_VERIFY(spu);
     return (int)Error::NO_ERROR;
@@ -88,7 +91,7 @@ int ProcessorOut(struct Processor* spu)
 int ProcessorIn(struct Processor* spu)
     {
     elem_t element = POISON;
-    scanf(ELEMF, &element);
+    scanf("%d", &element);
     StackPush(&spu->stk, element);
     }
 
@@ -136,9 +139,9 @@ int ProcessorSqrt(struct Processor* spu)
 
     StackPop(&(spu->stk), &element);
 
-    elem_t sqrt = sqrt(element);
+    elem_t result = sqrt(element);
 
-    StackPush(&(spu->stk), sqrt);
+    StackPush(&(spu->stk), result);
 
     PROCESSOR_VERIFY(spu);
     return (int)Error::NO_ERROR;
@@ -151,9 +154,9 @@ int ProcessorTg(struct Processor* spu)
     elem_t element  = POISON;
     StackPop(&(spu->stk), &element);
 
-    elem_t tg = COEFFICIENT * tg((double)element / COEFFICIENT);
+    elem_t result = COEFFICIENT * tan((double)element / COEFFICIENT);
 
-    StackPush(&(spu->stk), tg);
+    StackPush(&(spu->stk), result);
 
     PROCESSOR_VERIFY(spu);
     return (int)Error::NO_ERROR;
@@ -166,7 +169,7 @@ int ProcessorCtg(struct Processor* spu)
     elem_t element  = POISON;
     StackPop(&(spu->stk), &element);
 
-    elem_t ctg = COEFFICIENT * (1 / tg((double)element / COEFFICIENT));
+    elem_t ctg = COEFFICIENT * (1 / tan((double)element / COEFFICIENT));
 
     StackPush(&(spu->stk), ctg);
 

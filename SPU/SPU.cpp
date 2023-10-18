@@ -6,87 +6,36 @@
 #include "SPU.h"
 #include "Commands.h"
 #include "SpeakCommands.h"
+#include "..\logfile.h"
 #include "..\TotalFile.h"
 #include "..\Types.h"
 #include "..\Stack.h"
 
+#define DEF_CMD(name, num, have_arg, code)            \
+    case ((int)Commands::C##name):                    \
+        code                                          \
+        break;
+
+//-----------------------------------------------------------------------------
+
 int Compare(struct Processor* spu)
     {
-    int ccode = 0;
-              // but 1 int in file is commands + their arguments quantity!
+    int ccode = (int)Commands::CHLT;
+
     while (true)
         {
         ccode    = spu->codeArray[spu->position++];
 
         switch (ccode)
             {
-            case ((int)Commands::CPUSH):
-                ProcessorPush(spu);
-                break;
-            case ((int)Commands::CIN):
-                ProcessorIn(spu);
-                break;
-            case ((int)Commands::COUT):
-                ProcessorOut(spu);
-                break;
-            case ((int)Commands::CSUB):
-                ProcessorSub(spu);
-                break;
-            case ((int)Commands::CADD):
-                ProcessorAdd(spu);
-                break;
-            case ((int)Commands::CMUL):
-                ProcessorMul(spu);
-                break;
-            case ((int)Commands::CDIV):
-                ProcessorDiv(spu);
-                break;
-            case ((int)Commands::CSQRT):
-                ProcessorSqrt(spu);
-                break;
-            case ((int)Commands::CSIN):
-                ProcessorSin(spu);
-                break;
-            case ((int)Commands::CCOS):
-                ProcessorCos(spu);
-                break;
-            case ((int)Commands::CPUSH_R):
-                ProcessorPushR(spu);
-                break;
-            case ((int)Commands::CTG):
-                ProcessorTg(spu);
-                break;
-            case ((int)Commands::CCTG):
-                ProcessorCtg(spu);
-                break;
-            case ((int)Commands::CPOW):
-                ProcessorPow(spu);
-                break;
-            case ((int)Commands::CCAT):
-                ProcessorCat();
-                break;
-            case ((int)Commands::CDOG):
-                ProcessorDog();
-                break;
-            case ((int)Commands::CSLEEP):
-                ProcessorSleep();
-                break;
-            case ((int)Commands::CDEADLINE):
-                ProcessorDeadline();
-                break;
-            case ((int)Commands::CBOTAY):
-                ProcessorBotay();
-                break;
-            case ((int)Commands::CHLT):
-                return (int)Error::NO_ERROR;
+            #include "..\MyCommands.h"
             default:
-                fprintf(stderr, "%d - unknown command code, are you confident in your actions?\n", ccode);
-                break;
+                return (int)ErrorsOfSPU::ERROR_UNKNOWN_COMMAND;
             }
         PROCESSOR_VERIFY(spu)
         }
     }
-
+            #undef DEF_CMD
 //-----------------------------------------------------------------------------
 
 int ProcessorCtor(struct Processor* spu, const char* my_file_name)
@@ -99,19 +48,14 @@ int ProcessorCtor(struct Processor* spu, const char* my_file_name)
         return (int)ErrorsOfSPU::ERROR_FILE;
         }
 
-    int* codeArray = ByteCtor(native, my_file_name);
-       // this is krivo!!!
-        // kill!
-         // this is krivo!!!
+    STACK_CONSTRUCT(stk, 20);
 
-          // kill!
-           // the zhirnaya funkcija
+    int* codeArray = ByteCtor(native, my_file_name);
+
     spu->native       = native;
     spu->codeArray    = codeArray;
     spu->position     = 0;
     spu->my_file_name = my_file_name;
-
-    STACK_CONSTRUCT(stk, 20);
 
     return (int)Error::NO_ERROR;
     }
@@ -120,16 +64,16 @@ int ProcessorCtor(struct Processor* spu, const char* my_file_name)
 
 int ProcessorDtor(struct Processor* spu)
     {
+    StackDtor(&(spu->stk));
     if ((spu->native) != stdin)
         {
         fclose(spu->native);
         }
 
-    spu->my_file_name = "";
+    spu->my_file_name = nullptr;
     spu->native       = nullptr;
     spu->position     = 0;
 
-    StackDtor(&(spu->stk));
     ByteDtor(spu->codeArray);
 
     return (int)Error::NO_ERROR;
@@ -185,7 +129,7 @@ elem_t Variables (struct Processor* spu, int code)
 
 //-----------------------------------------------------------------------------
 
-int ProcessorPop(struct Processor* spu, int code)
+int ProcessorPop(struct Processor* spu)
     {
     elem_t reg = spu->codeArray[spu->position++];
     elem_t value = POISON;
@@ -231,7 +175,7 @@ int ProcessorOk(FILE* fp, struct Processor* spu)
 
 //-----------------------------------------------------------------------------
 
-int ProcesserDump(FILE* fp, struct Processor* spu, const char *file, int line, const char *function)
+int ProcesserDump(FILE* fp, struct Processor* spu, const char *file, int line, const char *func)
     {
     assert(spu);
     assert(spu->codeArray);
@@ -318,9 +262,9 @@ static int* ByteCtor(FILE* native, const char* my_file_name)
 
 //-----------------------------------------------------------------------------------------------------
 
-void ByteDtor(int* codeArray)
+void ByteDtor(struct Processor* spu)
     {
-    assert(codeArray);
+    assert(spu);
 
-    free(codeArray);
+    free(spu->codeArray);
     }

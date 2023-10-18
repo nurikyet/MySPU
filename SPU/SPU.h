@@ -2,6 +2,7 @@
 #define SPU_H_INCLUDED
 
 #include "..\Stack.h"
+#include "..\logfile.h"
 #include "ErrorsOfSPU.h"
 
 #define PROCESSOR_DUMP(spu) ProcessorDump(LOG_FILE, spu, __FILE__, __LINE__,  __func__)
@@ -10,7 +11,7 @@
                                if (error != 0)                                      \
                                    {                                                \
                                    PrintError(LOG_FILE, error);                     \
-                                   PrintErrorsOfSPU(LOG_FILE, result);              \
+                                   PrintErrorsOfSPU(LOG_FILE, error);               \
                                    PROCESSOR_DUMP(spu);                             \
                                    return error;                                    \
                                    }                                                \
@@ -29,12 +30,12 @@ int CommandOptions(char* line);
 int Compare(struct Processor* spu);
 int RegistreOptions(struct Processor*spu);
 
-int ProcessorCtor(struct processor* spu, const char* my_file_name);
+int ProcessorCtor(struct Processor* spu, const char* my_file_name);
 int ProcessorDtor(struct Processor* spu);
 int ProcessorPush(struct Processor* spu);
 int ProcessorPushR(struct Processor* spu);
-int ProcessorPop(struct Processor* spu, int code);
-int ProcessorDump(FILE* fp, struct Processor* spu, const char *file, int line, const char *function);
+int ProcessorPop(struct Processor* spu);
+int ProcessorDump(FILE* fp, struct Processor* spu, const char* file, int line, const char *func);
 int ProcessorOk(struct Processor* spu);
 
 #endif // SPU_H_INCLUDED

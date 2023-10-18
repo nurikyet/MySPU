@@ -1,20 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "stack.h"
-#include "../common/log_funcs.h"
-#include "../common/types.h"
-#include "../common/hash.h"
+//#include "..\Stack.h"
+#include "..\logfile.h"
+//#include "..\Types.h"
+//#include "..\Hash.h"
 #include "SPU.h"
 
 int main(const int argc, const char* argv[])
 {
-    OpenLogFile(argv[0]);
+    OpenLog(argv[0]);
 
     struct Processor spu = {};
 
     if (argc == 1)
-        ProcessorCtor(&spu);
+        ProcessorCtor(&spu, argv[1]);
     else
         ProcessorCtor(&spu, argv[1]);
 

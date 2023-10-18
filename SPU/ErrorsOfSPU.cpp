@@ -2,8 +2,8 @@
 #include <assert.h>
 
 #include "..\TotalFile"
-#include "Stack.h"
-#include "logfile.h"
+#include "..\Stack.h"
+#include "..\logfile.h"
 
 void PrintErrorsOfSPU(FILE* fp, int result)
     {
