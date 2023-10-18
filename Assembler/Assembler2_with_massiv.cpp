@@ -7,6 +7,39 @@
 #include "..\Types.h"
 #include "..\TotalFile.h"
 
+
+#define DEF_CMD(name, num, have_arg, code)                              \
+    if (strcmp(line, #name) == 0)                                       \
+        {                                                               \
+        codeArray[position++] = (int) Commands::C##name;                \
+                                                                \
+        if (have_arg)                                                   \
+            {                                                           \
+            elem_t element = POISON;                                    \
+            char regis[MAX_LEN_OF_LINE] = "";                           \
+            if (fscanf(InputFile, "%d", &element))                      \
+                {                                                       \
+                codeArray[position++] = element;                        \
+                }                                                       \
+            else if (fscanf(InputFile, "%s", regis))                    \
+                {                                                       \
+                if (strcmp(regis, RAX) == 0)                            \
+                    {                                                   \
+                    codeArray[position++] = ((int) Registers::CRAX);    \
+                    }                                                   \
+                else if (strcmp(regis, RBX) == 0)                       \
+                    {                                                   \
+                    codeArray[position++] = ((int) Registers::CRBX);    \
+                    }                                                   \
+                else if (strcmp(regis, RCX) == 0)                       \
+                    {                                                   \
+                    codeArray[position++] = ((int) Registers::CRCX);    \
+                    }                                                   \
+                }                                                       \
+            }                                                           \
+        }                                                               \
+    else
+
 //-----------------------------------------------------------------------------
 
 int Assembler(FILE* InputFile, FILE* OutputFile)
@@ -44,129 +77,10 @@ int Assembler(FILE* InputFile, FILE* OutputFile)
 
     while(fscanf(InputFile, "%s", line) != 0)
         {
-        if (strcmp(line, HLT) == 0)
-            {
-            codeArray[position++] = (int) Commands::CHLT;
-            break;
-            }
-        else if (strcmp(line, OUT) == 0)
-            {
-            codeArray[position++] = (int) Commands::COUT;
-            }
-        else if (strcmp(line, PUSH) == 0)
-            {
-            codeArray[position++] = (int) Commands::CPUSH;
-
-            elem_t element = POISON;
-            fscanf(InputFile, "%d", &element);
-            codeArray[position++] = element;
-            }
-        else if (strcmp(line, PUSH_R) == 0)
-            {
-            codeArray[position++] = (int) Commands::CPUSH_R;
-            char regis[MAX_LEN_OF_LINE] = "";
-            fscanf(InputFile, "%s", regis);
-            if (strcmp(regis, RAX) == 0)
-                {
-                codeArray[position++] = ((int) Registers::CRAX);
-                }
-            else if (strcmp(regis, RBX) == 0)
-                {
-                codeArray[position++] = ((int) Registers::CRBX);
-                }
-            else if (strcmp(regis, RCX) == 0)
-                {
-                codeArray[position++] = ((int) Registers::CRCX);
-                }
-            }
-        else if (strcmp(line, POP) == 0)
-            {
-            codeArray[position++] = ((int) Commands::CPOP);
-
-            char reg[MAX_LEN_OF_LINE] = "";
-            fscanf(InputFile, "%s", reg);
-            if (strcmp(reg, RAX) == 0)
-                {
-                codeArray[position++] = ((int) Registers::CRAX);
-                }
-            else if (strcmp(reg, RBX) == 0)
-                {
-                codeArray[position++] = ((int) Registers::CRBX);
-                }
-            else if (strcmp(reg, RCX) == 0)
-                {
-                codeArray[position++] = ((int) Registers::CRCX);
-                }
-            }
-        else if (strcmp(line, ADD) == 0)
-            {
-            codeArray[position++] = (int) Commands::CADD;
-            }
-        else if (strcmp(line, SUB) == 0)
-            {
-            codeArray[position++] = (int) Commands::CSUB;
-            }
-        else if (strcmp(line, MUL) == 0)
-            {
-            codeArray[position++] = (int) Commands::CMUL;
-            }
-        else if (strcmp(line, DIV) == 0)
-            {
-            codeArray[position++] = (int) Commands::CDIV;
-            }
-        else if (strcmp(line, SQRT) == 0)
-            {
-            codeArray[position++] = (int) Commands::CSQRT;
-            }
-        else if (strcmp(line, COS) == 0)
-            {
-            codeArray[position++] = (int) Commands::CCOS;
-            }
-        else if (strcmp(line, SIN) == 0)
-            {
-            codeArray[position++] = (int) Commands::CSIN;
-            }
-        else if (strcmp(line, IN) == 0)
-            {
-            codeArray[position++] = (int) Commands::CIN;
-            }
-        else if (strcmp(line, POW) == 0)
-            {
-            codeArray[position++] = (int) Commands::CPOW;
-            }
-        else if (strcmp(line, CAT) == 0)
-            {
-            codeArray[position++] = (int) Commands::CCAT;
-            }
-        else if (strcmp(line, DOG) == 0)
-            {
-            codeArray[position++] = (int) Commands::CDOG;
-            }
-        else if (strcmp(line, SLEEP) == 0)
-            {
-            codeArray[position++] = (int) Commands::CSLEEP;
-            }
-        else if (strcmp(line, BOTAY) == 0)
-            {
-            codeArray[position++] = (int) Commands::CBOTAY;
-            }
-        else if (strcmp(line, DEADLINE) == 0)
-            {
-            codeArray[position++] = (int) Commands::CDEADLINE;
-            }
-        else if (strcmp(line, TG) == 0)
-            {
-            codeArray[position++] = (int) Commands::CTG;
-            }
-        else if (strcmp(line, CTG) == 0)
-            {
-            codeArray[position++] = (int) Commands::CCTG;
-            }
-        else
-            {
-            return (int)ErrorsOfSPU::ERROR_UNKNOWN_COMMAND;
-            }
+        #include "..\MyCommands.h"
+        /*else*/ return (int)ErrorsOfSPU::ERROR_UNKNOWN_COMMAND;
         }
+    #undef DEF_CMD
 
     MassivOut(OutputFile, codeArray, position);
 
@@ -183,14 +97,13 @@ void MassivOut(FILE* OutputFile, int* codeArray, int len)
     for (int i = 0; i < len; i++)
         {
         fprintf(OutputFile, "%d\n", codeArray[i]);
-                //fprintf(stderr, "%d\n", codeArray[i]);
         }
     free(codeArray);
     }
 
 //-----------------------------------------------------------------------------
 
-int BinaryRecordind(int* codeArray, int position)
+int BinaryRecord(int* codeArray, int position)
     {
     FILE* file = fopen("code.bin", "wb");
 
@@ -213,7 +126,7 @@ int BinaryRecordind(int* codeArray, int position)
     /*
     file = fopen("code.bin", "rb");
 
-    fprintf (LOG_FILE, "From binary code\n");
+    fprintf (LOG_FILE, "\n<<<From binary code>>>\n");
     for (int i = 0; i < position; i++)
         {
         fprintf(LOG_FILE, "%d - %08X\n", i, codeArry[i]);

@@ -9,7 +9,7 @@ static const char* MY_SIGNATURE = "0401";
 static const int POISON = -777;
 
 int Assembler(FILE* InputFile, FILE* OutputFile);
-int BinaryRecordind(int* codeArray, int position);
+int BinaryRecord(int* codeArray, int position);
 
 void MassivOut(FILE* OutputFile, int* codeArray, int len);
 
