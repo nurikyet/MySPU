@@ -34,7 +34,7 @@ DEF_CMD(COS, 6, 0,
     ProcessorCos(spu);
     })
 
-DEF_CMD(IN, 7, 0,
+DEF_CMD(IN, 7, 1,
     {
     ProcessorIn(spu);
     })
@@ -44,7 +44,7 @@ DEF_CMD(SUB, 8, 0,
     ProcessorSub(spu);
     })
 
-DEF_CMD(OUT, 9, 0,
+DEF_CMD(OUT, 9, 1,
     {
     ProcessorOut(spu);
     })
@@ -54,7 +54,7 @@ DEF_CMD(DIV, 10, 0,
     ProcessorDiv(spu);
     })
 
-DEF_CMD(POP, 11, 0,
+DEF_CMD(POP, 11, -1,
     {
     ProcessorPop(spu);
     })
@@ -99,7 +99,7 @@ DEF_CMD(DEADLINE, 19, 0,
     ProcessorDeadline();
     })
 
-DEF_CMD(PUSH_R, 20, 0,
+DEF_CMD(PUSH_R, 20, -1,
     {
     ProcessorPushR(spu);
     })
