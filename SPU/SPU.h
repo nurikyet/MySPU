@@ -2,7 +2,7 @@
 #define SPU_H_INCLUDED
 
 #include "..\Stack.h"
-#include "..\logfile.h"
+#include "logfile.h"
 #include "ErrorsOfSPU.h"
 
 #define PROCESSOR_DUMP(spu) ProcessorDump(LOG_FILE, spu, __FILE__, __LINE__,  __func__)

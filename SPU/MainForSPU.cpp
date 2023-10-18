@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 //#include "..\Stack.h"
-#include "..\logfile.h"
+#include "logfile.h"
 //#include "..\Types.h"
 //#include "..\Hash.h"
 #include "SPU.h"

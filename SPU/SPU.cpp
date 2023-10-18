@@ -6,7 +6,7 @@
 #include "SPU.h"
 #include "Commands.h"
 #include "SpeakCommands.h"
-#include "..\logfile.h"
+#include "logfile.h"
 #include "..\TotalFile.h"
 #include "..\Types.h"
 #include "..\Stack.h"

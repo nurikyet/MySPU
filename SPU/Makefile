@@ -11,10 +11,10 @@ all: hello.exe
 hello.exe: SPU.o Commands.o SpeakCommands.o MainForSPU.o
 	$(CC) $(CFLAGS) $^ -o $@
 
-MainForSPU.o: MainForSPU.cpp SPU.h ..\logfile.h
+MainForSPU.o: MainForSPU.cpp SPU.h logfile.h
 	$(CC) $(CFLAGS) $< -c -o $@
 
-SPU.o: SPU.cpp SPU.h ..\MyCommands.h Commands.h SpeakCommands.h ..\Types.h ..\TotalFile.h ..\Stack.h ..\logfile.h
+SPU.o: SPU.cpp SPU.h ..\MyCommands.h Commands.h SpeakCommands.h ..\Types.h ..\TotalFile.h ..\Stack.h logfile.h
 	$(CC) $(CFLAGS) $< -c -o $@
 
 Commands.o: Commands.cpp Commands.h SPU.h ..\Types.h ..\TotalFile.h ..\Stack.h
