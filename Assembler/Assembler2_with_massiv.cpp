@@ -12,7 +12,7 @@
     if (strcmp(line, #name) == 0)                                       \
         {                                                               \
         codeArray[position++] = (int) Commands::C##name;                \
-                                                                \
+                                                                        \
         if (have_arg)                                                   \
             {                                                           \
             elem_t element = POISON;                                    \
@@ -84,7 +84,7 @@ int Assembler(FILE* InputFile, FILE* OutputFile)
 
     MassivOut(OutputFile, codeArray, position);
 
-    BinaryRecordind(codeArray, position);
+    BinaryRecord(codeArray, position);
     return (int)ErrorsOfSPU::NO_ERROR;
     }
 
@@ -123,17 +123,17 @@ int BinaryRecord(int* codeArray, int position)
     }
 
     fclose(file);
-    /*
-    file = fopen("code.bin", "rb");
 
-    fprintf (LOG_FILE, "\n<<<From binary code>>>\n");
+   // file = fopen("code.bin", "rb");
+
+    fprintf (stderr, "\n<<<From binary code>>>\n");
     for (int i = 0; i < position; i++)
         {
-        fprintf(LOG_FILE, "%d - %08X\n", i, codeArry[i]);
+        fprintf(stderr, "%d - %08X\n", i, codeArray[i]);
         }
 
-    fclose(file);
-    */
+   // fclose(file);
+
     return 0;
 }
 
