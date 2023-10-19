@@ -1,7 +1,7 @@
 #ifndef HASH_H_INCLUDED
 #define HASH_H_INCLUDED
 
-#include "Types.h"
+#include "..\Types.h"
 
 void ChangeHash(struct stack* stk);
 

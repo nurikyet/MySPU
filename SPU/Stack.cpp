@@ -8,13 +8,26 @@
 #include "logfile.h"
 #include "Error.h"
 
+#define ABOBA()(printf("\n<<I work in a FILE %s(%d) in %s>>\n", __FILE__, __LINE__, __func__))
+
 int StackCtor(struct stack* stk, size_t cpt)
     {
     assert(cpt);
     stk->capacity = cpt;
 
     int data_size = (stk->capacity) * sizeof(elem_t);
+
+    stk->data = (elem_t*) calloc(data_size, sizeof(char));
+    if (stk->data == nullptr)
+                {
+                stk->capacity = 0;
+                fprintf(LOG_FILE, "Function %s: not enough memory to allocate", __func__);
+                return (int)Error::ERROR_MEMORY;
+                }
+
     elem_t* left_elem = (stk->data);
+
+    ABOBA();
 
     IF_CANARY
     (
@@ -31,20 +44,19 @@ int StackCtor(struct stack* stk, size_t cpt)
         stk->stack_last  = canary_value;
     )
 
-    stk->data = (elem_t*) calloc(data_size, sizeof(char));
-    if (stk->data == nullptr)
-                {
-                stk->capacity = 0;
-                fprintf(LOG_FILE, "Function %s: not enough memory to allocate", __func__);
-                return (int)Error::ERROR_MEMORY;
-                }
 
     stk->data = left_elem;
+    printf("%X - %d", left_elem, left_elem);
     stk->size = 0;
+
+    ABOBA();
 
     IF_HASH(ChangeHash(stk);)
 
-    VERIFY(stk)
+    //VERIFY(stk);
+
+    ABOBA();
+
     return (int)Error::NO_ERROR;
     }
 
@@ -81,6 +93,8 @@ int StackPush(struct stack* stk, const elem_t value)
     {
     VERIFY(stk)
 
+    ABOBA();
+
     if ((stk->size) >= (stk->capacity))
         {
         int new_capacity = REALLOC_MORE_MEMORY_MULTIPLIER*(stk->capacity);
@@ -89,6 +103,8 @@ int StackPush(struct stack* stk, const elem_t value)
         }
     (stk->data)[(stk->size)] = value;
     (stk->size)++;
+
+    ABOBA();
 
     IF_HASH(ChangeHash(stk);)
     VERIFY(stk)
@@ -100,6 +116,8 @@ int StackPush(struct stack* stk, const elem_t value)
 int StackPop(struct stack* stk, elem_t* retvalue)
     {
     VERIFY(stk)
+
+    ABOBA();
 
     (stk->size)--;
     *retvalue = (stk->data)[(stk->size)];
@@ -115,6 +133,8 @@ int StackPop(struct stack* stk, elem_t* retvalue)
         StackRealloc(stk, new_capacity);
         }
 
+    ABOBA();
+
     IF_HASH(ChangeHash(stk);)
     VERIFY(stk)
     return (int)Error::NO_ERROR;
@@ -124,15 +144,21 @@ int StackPop(struct stack* stk, elem_t* retvalue)
 
 void StackDump(FILE* fp, struct stack* stk, const char* func, const char* file, const int line)
     {
+    ABOBA();
+
     assert(stk);
     assert(func);
     assert(file);
     assert(stk->data);
 
+    ABOBA();
+
     fprintf(fp, "Stack[%p] \"stk\" from %s(%d) in function - %s.\n", stk,  file, line, func);
     fprintf(fp, "{\n");
     fprintf(fp, "size < %d\n", stk->size);
     fprintf(fp, "capacity = %d\n", stk->capacity);
+
+    ABOBA();
 
     IF_CANARY
     (
@@ -146,14 +172,18 @@ void StackDump(FILE* fp, struct stack* stk, const char* func, const char* file, 
         fprintf(fp,"last CANARY  in data  is  >%lX\n", *last_canary);
     )
 
+    ABOBA();
+
     fprintf(fp, "data[%p]\n", stk->data);
     PrintStack(fp, stk);
+    ABOBA();
     }
 
 //-----------------------------------------------------------------------------
 
 void PrintStack(FILE* fp, const struct stack *stk)
     {
+    ABOBA();
     fprintf(fp, "stack %d > \n", stk->size);
     for (int i = 0; i < (stk->size); i++)
         {
@@ -168,7 +198,7 @@ void PrintStack(FILE* fp, const struct stack *stk)
         fprintf(fp, PRINTFELEM, stk->data[i]);
         fprintf(fp, "\n");
         }
-
+    ABOBA();
     fprintf(fp, "\n");
     }
 
@@ -182,11 +212,15 @@ int StackRealloc(struct stack *stk, int new_capacity)
 
     int data_size = new_capacity * sizeof(elem_t*);
 
+    ABOBA();
+
     IF_CANARY
     (
         data_size += 2*sizeof(canary_t);
         stk->data -= sizeof(canary_t);
     )
+
+    ABOBA();
 
     elem_t *check = (elem_t*)realloc(stk->data, data_size);
     if (check != nullptr)
@@ -214,6 +248,8 @@ int StackRealloc(struct stack *stk, int new_capacity)
 
     stk->data     = left_elem;
     stk->capacity = new_capacity;
+
+    ABOBA();
 
     IF_HASH(ChangeHash(stk);)
     VERIFY(stk)

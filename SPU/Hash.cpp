@@ -3,7 +3,7 @@
 
 #include "Hash.h"
 #include "Stack.h"
-#include "Types.h"
+#include "..\Types.h"
 #include "logfile.h"
 
 bool HashOkData(struct stack* stk)

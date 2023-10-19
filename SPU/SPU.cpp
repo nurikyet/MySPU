@@ -11,6 +11,8 @@
 #include "..\Types.h"
 #include "Stack.h"
 
+#define ABOBA() printf("\n<<I work in a FILE %s(%d) in %s>>\n", __FILE__, __LINE__, __func__)
+
 #define DEF_CMD(name, num, have_arg, code)            \
     case ((int)Commands::C##name):                    \
         code                                          \
@@ -21,6 +23,8 @@
 int Compare(struct Processor* spu)
     {
     int ccode = (int)Commands::CHLT;
+
+    ABOBA();
 
     while (true)
         {
@@ -33,6 +37,7 @@ int Compare(struct Processor* spu)
                 return (int)ErrorsOfSPU::ERROR_UNKNOWN_COMMAND;
             }
         PROCESSOR_VERIFY(spu)
+        ABOBA();
         }
     }
             #undef DEF_CMD
@@ -48,9 +53,16 @@ int ProcessorCtor(struct Processor* spu, const char* my_file_name)
         return (int)ErrorsOfSPU::ERROR_FILE;
         }
 
-    STACK_CONSTRUCT(stk, 20);
+    ABOBA();
+
+    //STACK_CONSTRUCT(spu->stk, 20);
+    StackCtor(&(spu->stk), 30);
+
+    ABOBA();
 
     int* codeArray = ByteCtor(native, my_file_name);
+
+    ABOBA();
 
     spu->native       = native;
     spu->codeArray    = codeArray;
@@ -157,7 +169,7 @@ int ProcessorPop(struct Processor* spu)
 
 //-----------------------------------------------------------------------------
 
-int ProcesserDump(FILE* fp, struct Processor* spu, const char *file, int line, const char *func)
+int ProcessorDump(FILE* fp, struct Processor* spu, const char *file, int line, const char *func)
     {
     assert(spu);
     assert(spu->codeArray);
@@ -218,6 +230,8 @@ static int* ByteCtor(FILE* native, const char* my_file_name)
     assert(native);
     assert(my_file_name);
 
+    ABOBA();
+
     int len = 0;
     size_t check = fread(&len, sizeof(int), 1, native);
     if (check == 0)
@@ -239,6 +253,7 @@ static int* ByteCtor(FILE* native, const char* my_file_name)
         return nullptr;
         }
 
+    ABOBA();
     return codeArray;
     }
 

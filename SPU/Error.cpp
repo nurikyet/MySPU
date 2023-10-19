@@ -7,9 +7,13 @@
 #include "logfile.h"
 #include "Error.h"
 
+#define ABOBA()(printf("\n<<I work in a FILE %s(%d) in %s>>\n", __FILE__, __LINE__, __func__))
+
 void PrintError(FILE* fp, int result)
     {
+    ABOBA();
     assert(fp);
+    ABOBA();
     IF_HASH
     (
         if ((result & (int)Error::ERROR_DATA) != 0)
@@ -35,12 +39,16 @@ void PrintError(FILE* fp, int result)
 
     if ((result & (int)Error::ERROR_STRUCT) != 0)
         fprintf(fp, "address of struct != nullptr\n");
+
+    ABOBA();
+
     }
 
 //-----------------------------------------------------------------------------
 
 int StackOk(FILE* fp, struct stack* stk)
     {
+    ABOBA();
     int result = 0;
     IF_HASH
     (
@@ -53,7 +61,7 @@ int StackOk(FILE* fp, struct stack* stk)
             result |= (int)Error::ERROR_STRUCT;
             }
     )
-
+    ABOBA();
     IF_CANARY
     (
         if (stk->stack_first != canary_value or stk->stack_last != canary_value)
@@ -73,10 +81,12 @@ int StackOk(FILE* fp, struct stack* stk)
             result |= (int)Error::ERROR_DATA_CANARY;
             }
     )
+    ABOBA();
     if (!stk->capacity)
         {
         result |= (int)Error::ERROR_CAPACITY;
         }
+    ABOBA();
     if (stk->capacity < 0)
         {
         result |= (int)Error::ERROR_CAPACITY;
@@ -85,16 +95,19 @@ int StackOk(FILE* fp, struct stack* stk)
         {
         result |= (int)Error::ERROR_SIZE;
         }
+    ABOBA();
     if (!stk->data)
         {
         result |= (int)Error::ERROR_DATA;
         }
-
+    ABOBA();
     if (stk == nullptr)
         {
         result |= (int)Error::ERROR_STRUCT;
         }
-
-    PrintError(fp, result);
+    ABOBA();
+    //PrintError(fp, result);
+    ABOBA();
+    printf("MY RESULT IS %d\n", result);
     return result;
     }

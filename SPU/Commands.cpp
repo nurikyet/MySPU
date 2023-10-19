@@ -84,6 +84,8 @@ int ProcessorOut(struct Processor* spu)
 
     PROCESSOR_VERIFY(spu);
     printf("Result is %lg\n", (double) ret_value / COEFFICIENT);
+
+    return (int)Error::NO_ERROR;
     }
 
 //-----------------------------------------------------------------------------
@@ -93,6 +95,8 @@ int ProcessorIn(struct Processor* spu)
     elem_t element = POISON;
     scanf("%d", &element);
     StackPush(&spu->stk, element);
+
+    return (int)Error::NO_ERROR;
     }
 
 //-----------------------------------------------------------------------------

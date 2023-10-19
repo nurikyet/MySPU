@@ -4,6 +4,8 @@
 #include "..\Types.h"
 #include "Error.h"
 
+#define ABOBA()(printf("\n<<I work in a FILE %s(%d) in %s>>\n", __FILE__, __LINE__, __func__))
+
 #define STACK_CONSTRUCT(nick, quantity) struct stack nick = {};          \
                                         StackCtor(&nick, quantity);      \
                                         nick.name = #nick;
@@ -25,13 +27,14 @@
 #endif
 
 #define STACK_DUMP(stk) StackDump(LOG_FILE, stk, __func__, __FILE__, __LINE__)
-#define VERIFY(stk) {int error = StackOk(LOG_FILE, stk);              \
+#define VERIFY(stk) {int error = StackOk(LOG_FILE, stk); printf("error in verify is %d\n", error);             \
                     if (error != 0)                                   \
                         {                                             \
-                        PrintError(LOG_FILE, error);                  \
+                        PrintError(LOG_FILE, error);     ABOBA();             \
                         STACK_DUMP(stk);                              \
                         return error;                                 \
                         }                                             \
+                    /*else return 0; */                                           \
                     }
 
 
