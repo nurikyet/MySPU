@@ -74,7 +74,7 @@ int ProcessorDtor(struct Processor* spu)
     spu->native       = nullptr;
     spu->position     = 0;
 
-    ByteDtor(spu->codeArray);
+    ByteDtor(spu);
 
     return (int)Error::NO_ERROR;
     }
@@ -153,24 +153,6 @@ int ProcessorPop(struct Processor* spu)
         }
 
     return (int)Error::NO_ERROR;
-    }
-
-//-----------------------------------------------------------------------------
-
-int ProcessorOk(FILE* fp, struct Processor* spu)
-    {
-    VERIFY(&(spu->stk));
-    if (spu == nullptr)
-        {
-        fprintf(fp, "You have problem in initialization of spu\n");
-        return (int)ErrorsOfSPU::ERROR_SPU;
-        }
-    if (spu->native == NULL)
-        {
-        fprintf(fp, "You have problem in initialization of native file\n");
-        return (int)ErrorsOfSPU::ERROR_FILE;
-        }
-    return (int)ErrorsOfSPU::NO_ERROR;
     }
 
 //-----------------------------------------------------------------------------
