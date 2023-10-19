@@ -14,13 +14,23 @@ hello.exe: SPU.o Commands.o SpeakCommands.o MainForSPU.o
 MainForSPU.o: MainForSPU.cpp SPU.h logfile.h
 	$(CC) $(CFLAGS) $< -c -o $@
 
-SPU.o: SPU.cpp SPU.h ..\MyCommands.h Commands.h SpeakCommands.h ..\Types.h ..\TotalFile.h ..\Stack.h logfile.h
+SPU.o: SPU.cpp SPU.h ..\MyCommands.h Commands.h SpeakCommands.h ..\Types.h ..\TotalFile.h Stack.h logfile.h
 	$(CC) $(CFLAGS) $< -c -o $@
 
-Commands.o: Commands.cpp Commands.h SPU.h ..\Types.h ..\TotalFile.h ..\Stack.h
+Commands.o: Commands.cpp Commands.h SPU.h ..\Types.h ..\TotalFile.h Stack.h
+	$(CC) $(CFLAGS) $< -c -o $@
+
+logfile.o: logfile.cpp lofgile.h ..\Types.h Stack.h
+	$(CC) $(CFLAGS) $< -c -o $@
+
+Stack.o: Stack.cpp Stack.h Hash.h logfile.h Error.h ..\Types.h
 	$(CC) $(CFLAGS) $< -c -o $@
 
 SpeakCommands.o:SpeakCommands.cpp SpeakCommands.h
+	$(CC) $(CFLAGS) $< -c -o $@
+
+Error.o: Error.cpp Error.h Hash.h Stack.h logfile.h ..\Types.h
+	$(CC) $(CFLAGS) $< -c -o $@
 
 .PHONY: all clean
 
