@@ -1,7 +1,7 @@
 #ifndef SPU_H_INCLUDED
 #define SPU_H_INCLUDED
 
-#include "..\Stack.h"
+#include "Stack.h"
 #include "logfile.h"
 #include "ErrorsOfSPU.h"
 

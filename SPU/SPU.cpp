@@ -9,7 +9,7 @@
 #include "logfile.h"
 #include "..\TotalFile.h"
 #include "..\Types.h"
-#include "..\Stack.h"
+#include "Stack.h"
 
 #define DEF_CMD(name, num, have_arg, code)            \
     case ((int)Commands::C##name):                    \

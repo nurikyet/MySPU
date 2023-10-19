@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #include "..\Types.h"
-#include "..\Stack.h"
+//#include "Stack.h"
 
 extern FILE* LOG_FILE;
 static const int MAX_LEN = 256;

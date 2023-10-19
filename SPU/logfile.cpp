@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "logfile.h"
-#include "Types.h"
+#include "..\Types.h"
 #include "Stack.h"
 
 FILE* LOG_FILE = stderr;

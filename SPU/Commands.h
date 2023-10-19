@@ -1,7 +1,7 @@
 #ifndef COMMANDS_H_INCLUDED
 #define COMMANDS_H_INCLUDED
 
-#include "..\Stack.h"
+#include "Stack.h"
 
 const int COEFFICIENT = 100;
 

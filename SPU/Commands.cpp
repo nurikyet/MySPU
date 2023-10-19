@@ -5,7 +5,7 @@
 #include "SPU.h"
 #include "..\Types.h"
 #include "..\TotalFile.h"
-#include "..\Stack.h"
+#include "Stack.h"
 
 //-----------------------------------------------------------------------------
 
