@@ -6,8 +6,7 @@
 #include "Assembler.h"
 #include "..\Types.h"
 #include "..\TotalFile.h"
-
-
+/*
 #define DEF_CMD(name, num, have_arg, code)                              \
     if (strcmp(line, #name) == 0)                                       \
         {                                                               \
@@ -36,6 +35,41 @@
                     codeArray[position++] = ((int) Registers::CRCX);    \
                     }                                                   \
                 }                                                       \
+            }                                                           \
+        }                                                               \
+    else
+*/
+
+#define DEF_CMD(name, num, have_arg, code)                              \
+    if (strcmp(line, #name) == 0)                                       \
+        {                                                               \
+        codeArray[position++] = (int) Commands::C##name;                \
+                                                                        \
+        if (have_arg == 1)                                              \
+            {                                                           \
+            elem_t element = POISON;                                    \
+                                                                        \
+            fscanf(InputFile, "%d", &element);                          \
+                                                                        \
+            codeArray[position++] = element;                            \
+                                                                        \
+             }                                                          \
+        else if (have_arg == -1)                                        \
+            {                                                           \
+            char regis[MAX_LEN_OF_LINE] = "";                           \
+            fscanf(InputFile, "%s", regis);                             \
+            if (strcmp(regis, RAX) == 0)                                \
+                    {                                                   \
+                    codeArray[position++] = ((int) Registers::CRAX);    \
+                    }                                                   \
+                else if (strcmp(regis, RBX) == 0)                       \
+                    {                                                   \
+                    codeArray[position++] = ((int) Registers::CRBX);    \
+                    }                                                   \
+                else if (strcmp(regis, RCX) == 0)                       \
+                    {                                                   \
+                    codeArray[position++] = ((int) Registers::CRCX);    \
+                    }                                                   \
             }                                                           \
         }                                                               \
     else
@@ -81,6 +115,8 @@ int Assembler(FILE* InputFile, FILE* OutputFile)
         }
 
     char line[MAX_LEN_OF_LINE] = "";
+
+    ABOBA;
 
     while(fscanf(InputFile, "%s", line) != 0)
         {
