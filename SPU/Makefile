@@ -32,6 +32,9 @@ SpeakCommands.o:SpeakCommands.cpp SpeakCommands.h
 Error.o: Error.cpp Error.h Hash.h Stack.h logfile.h ..\Types.h
 	$(CC) $(CFLAGS) $< -c -o $@
 
+ErrorsForSPU.o: ErrorsOfSPU.h ..\TotalFile.h Stack.h logfile.h
+	$(CC) $(CFLAGS) $< -c -o $@
+
 .PHONY: all clean
 
 clean:
