@@ -66,21 +66,21 @@
             char regis[MAX_LEN_OF_LINE] = "";                           \
             fscanf(InputFile, "%s", regis);                             \
             if (strcmp(regis, RAX) == 0)                                \
-                    {                                                   \
-                    codeArray[position++] = ((int) Registers::CRAX);    \
-                    }                                                   \
-                else if (strcmp(regis, RBX) == 0)                       \
-                    {                                                   \
-                    codeArray[position++] = ((int) Registers::CRBX);    \
-                    }                                                   \
-                else if (strcmp(regis, RCX) == 0)                       \
-                    {                                                   \
-                    codeArray[position++] = ((int) Registers::CRCX);    \
-                    }                                                   \
-                else if (regis[0] == ':')                               \
-                    {                                                   \
-                    codeArray[position++] =  labels[regis[1] - '0'];    \
-                    }                                                                                                          \
+                {                                                       \
+                codeArray[position++] = ((int) Registers::CRAX);        \
+                }                                                       \
+            else if (strcmp(regis, RBX) == 0)                           \
+                {                                                       \
+                codeArray[position++] = ((int) Registers::CRBX);        \
+                }                                                       \
+            else if (strcmp(regis, RCX) == 0)                           \
+                {                                                       \
+                codeArray[position++] = ((int) Registers::CRCX);        \
+                }                                                       \
+            else if (regis[0] == ':')                                   \
+                {                                                       \
+                codeArray[position++] =  labels[regis[1] - '0'];        \
+                }                                                       \
             }                                                           \
         }                                                               \
     else
@@ -135,6 +135,8 @@ int Assembler(FILE* InputFile, FILE* OutputFile)
         {
         labels[i] = labels[i] - 1;
         }
+
+    ABOBA;
 
     while(fscanf(InputFile, "%s", line) != EOF)
         {
@@ -222,6 +224,7 @@ void PrintEverything(int* codeArray, int position)
  int ProcessLabel(int* labels, char* line, int position)
     {
     labels[line[1] - '0'] = position + 1;
+    return (int)ErrorsOfSPU::NO_ERROR;
     }
 
 //-----------------------------------------------------------------------------
