@@ -103,3 +103,39 @@ DEF_CMD(PUSH_R, 20, -1,
     {
     ProcessorPushR(spu);
     })
+
+DEF_CMD(JMP, 21, -1,
+    {
+    ProcessorJump(spu);
+    })
+
+DEF_CMD(JB, 22, -1,
+    {
+    ProcessorJumpBelow(spu);
+    })
+
+DEF_CMD(JBE, 23, -1,
+    {
+    ProcessorJumpBelowEqual(spu);
+    })
+
+DEF_CMD(JA, 24, -1,
+    {
+    ProcessorJumpAbove(spu);
+    })
+
+DEF_CMD(JAE, 25, -1,
+    {
+    ProcessorJumpAboveEqual(spu);
+    })
+
+DEF_CMD(JE, 26, -1,
+    {
+    ProcessorJumpEqual(spu);
+    })
+
+DEF_CMD(JNE, 21, -1,
+    {
+    ProcessorJumpNotEqual(spu);
+    })
+
