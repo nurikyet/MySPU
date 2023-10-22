@@ -134,7 +134,7 @@ DEF_CMD(JE, 26, -1,
     ProcessorJumpEqual(spu);
     })
 
-DEF_CMD(JNE, 21, -1,
+DEF_CMD(JNE, 27, -1,
     {
     ProcessorJumpNotEqual(spu);
     })
