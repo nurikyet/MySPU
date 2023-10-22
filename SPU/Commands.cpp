@@ -7,6 +7,19 @@
 #include "..\TotalFile.h"
 #include "Stack.h"
 
+#define COMPARE(sign) {elem_t first_element  = POISON;                      \
+                   elem_t second_element = POISON;                          \
+                                                                            \
+                   StackPop(&(spu->stk), &first_element);                   \
+                   StackPop(&(spu->stk), &second_element);                  \
+                   if (first_element sign second_element)                   \
+                   {                                                        \
+                   (spu->position) = (spu->codeArray)[spu->position + 1];   \
+                   }                                                        \
+                   else                                                     \
+                   {                                                        \
+                   (spu->position) = spu->position + 2;                     \
+                   }}
 //-----------------------------------------------------------------------------
 
 int ProcessorCos(struct Processor* spu)
@@ -248,3 +261,69 @@ void ProcessorDog()
 
 //-----------------------------------------------------------------------------
 
+int ProcessorJump(struct Processor* spu)
+    {
+    (spu->position) = (spu->codeArray)[spu->position + 1];
+    }
+
+//-----------------------------------------------------------------------------
+
+int ProcessorJumpBelow(struct Processor* spu)
+    {
+    /*
+    elem_t first_element  = POISON;
+    elem_t second_element = POISON;
+
+    StackPop(&(spu->stk), &first_element);
+    StackPop(&(spu->stk), &second_element);
+
+    if (first_element < second_element)
+        {
+        (spu->position) = (spu->codeArray)[spu->position + 1];
+        }
+    else
+        {
+        (spu->position) = spu->position + 2;
+        }
+    }
+    */
+
+    COMPARE(<);
+    }
+
+//-----------------------------------------------------------------------------
+
+int ProcessorJumpBelowEqual(struct Processor* spu)
+    {
+    COMPARE(<=);
+    }
+
+//-----------------------------------------------------------------------------
+
+int ProcessorJumpAbove(struct Processor* spu)
+    {
+    COMPARE(>);
+    }
+
+//-----------------------------------------------------------------------------
+
+int ProcessorJumpAbove(struct Processor* spu)
+    {
+    COMPARE(>=);
+    }
+
+//-----------------------------------------------------------------------------
+
+int ProcessorJumpEqual(struct Processor* spu)
+    {
+    COMPARE(==);
+    }
+
+//-----------------------------------------------------------------------------
+
+int ProcessorJumpNotEqual(struct Processor* spu)
+    {
+    COMPARE(!=);
+    }
+
+//-----------------------------------------------------------------------------
