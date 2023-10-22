@@ -6,6 +6,7 @@
 #include "Assembler.h"
 #include "..\Types.h"
 #include "..\TotalFile.h"
+
 /*
 #define DEF_CMD(name, num, have_arg, code)                              \
     if (strcmp(line, #name) == 0)                                       \
@@ -34,11 +35,17 @@
                     {                                                   \
                     codeArray[position++] = ((int) Registers::CRCX);    \
                     }                                                   \
+                else if (regis[0] == ':')                               \
+                    {                                                   \
+                    codeArray[position++] =  labels[regis[1] - '0'];    \
+                    }                                                   \
                 }                                                       \
             }                                                           \
+        if (num == (int)(Commands::CHLT) break;                         \                                                               \
         }                                                               \
     else
 */
+
 
 #define DEF_CMD(name, num, have_arg, code)                              \
     if (strcmp(line, #name) == 0)                                       \
@@ -70,9 +77,16 @@
                     {                                                   \
                     codeArray[position++] = ((int) Registers::CRCX);    \
                     }                                                   \
+                else if (regis[0] == ':')                               \
+                    {                                                   \
+                    codeArray[position++] =  labels[regis[1] - '0'];    \
+                    }                                                                                                          \
             }                                                           \
+        if (num == (int) Commands::CHLT)                                \
+            break;                                                      \
         }                                                               \
     else
+
 
 #define ABOBA printf("aboba - %d\n", __LINE__)
 
@@ -118,10 +132,23 @@ int Assembler(FILE* InputFile, FILE* OutputFile)
 
     ABOBA;
 
-    while(fscanf(InputFile, "%s", line) != 0)
+    int labels [NUMBER_OF_LABELS] = {};
+    for (int i = 0; i < NUMBER_OF_LABELS; i++)
         {
-        #include "..\MyCommands.h"
-        /*else*/ return (int)ErrorsOfSPU::ERROR_UNKNOWN_COMMAND;
+        labels[i] = labels[i] - 1;
+        }
+
+    while(fscanf(InputFile, "%s", line) != EOF)
+        {
+        if (line[0] == ':')
+            {
+            ProcessLabel(labels, line, position);
+            }
+        else
+            {
+            #include "..\MyCommands.h"
+            /*else*/ return (int)ErrorsOfSPU::ERROR_UNKNOWN_COMMAND;
+            }
         }
     #undef DEF_CMD
 
@@ -191,3 +218,12 @@ void PrintEverything(int* codeArray, int position)
         fprintf(stderr, "%d - %08X\n", i, codeArray[i]);
         }
     }
+
+ //-----------------------------------------------------------------------------
+
+ int ProcessLabel(int* labels, char* line, int position)
+    {
+    labels[line[1] - '0'] = position + 1;
+    }
+
+//-----------------------------------------------------------------------------
