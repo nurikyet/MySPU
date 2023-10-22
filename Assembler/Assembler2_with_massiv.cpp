@@ -82,8 +82,6 @@
                     codeArray[position++] =  labels[regis[1] - '0'];    \
                     }                                                                                                          \
             }                                                           \
-        if (num == (int) Commands::CHLT)                                \
-            break;                                                      \
         }                                                               \
     else
 
