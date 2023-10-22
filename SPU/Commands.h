@@ -21,5 +21,12 @@ int ProcessorSqrt(struct Processor* spu);
 int ProcessorTg(struct Processor* spu);
 int ProcessorCtg(struct Processor* spu);
 int ProcessorPow(struct Processor* spu);
+int ProcessorJump(struct Processor* spu);
+int ProcessorJumpBelow(struct Processor* spu);
+int ProcessorJumpBelowEqual(struct Processor* spu);
+int ProcessorJumpAbove(struct Processor* spu);
+int ProcessorJumpAboveEqual(struct Processor* spu);
+int ProcessorJumpEqual(struct Processor* spu);
+int ProcessorJumpNotEqual(struct Processor* spu);
 
 #endif // COMMANDS_H_INCLUDED
