@@ -41,7 +41,7 @@
                     }                                                   \
                 }                                                       \
             }                                                           \
-        if (num == (int)(Commands::CHLT) break;                         \                                                               \
+        if (num == (int)(Commands::CHLT) break;                         \
         }                                                               \
     else
 */
@@ -138,6 +138,24 @@ int Assembler(FILE* InputFile, FILE* OutputFile)
 
     ABOBA;
 
+    while(fscanf(InputFile, "%s", line) != EOF)
+        {
+        if (line[0] == ':')
+            {
+            ProcessLabel(labels, line, position);
+            }
+        else
+            {
+            #include "..\MyCommands.h"
+            /*else*/ return (int)ErrorsOfSPU::ERROR_UNKNOWN_COMMAND;
+            }
+        }
+    //#undef DEF_CMD
+    ABOBA;
+    //
+    position = 0;
+    fseek(InputFile, 9, SEEK_SET);
+    ABOBA;
     while(fscanf(InputFile, "%s", line) != EOF)
         {
         if (line[0] == ':')

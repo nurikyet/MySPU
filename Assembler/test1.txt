@@ -1,0 +1,19 @@
+1
+0401
+PUSH 1
+POP rax
+:3
+PUSH_R rax
+PUSH 10 
+JA :4
+PUSH_R rax
+PUSH_R rax
+MUL
+OUT
+PUSH_R rax
+PUSH 1
+ADD
+POP rax
+JMP :3
+:4
+HLT
